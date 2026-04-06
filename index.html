@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mariya Maheen — Software Engineer & Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f0e6d3;
+    --muted: #888;
+    --border: rgba(201,168,76,0.15);
+    --glass: rgba(255,255,255,0.03);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Syne', sans-serif;
+    cursor: none;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  #cursor {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s ease;
+  }
+  #cursor-ring {
+    position: fixed; width: 40px; height: 40px;
+    border: 1px solid rgba(201,168,76,0.3); border-radius: 50%;
+    pointer-events: none; z-index: 99998;
+    transform: translate(-50%,-50%);
+    transition: all 0.2s ease-out;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content:''; position:fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:1; opacity:0.3;
+  }
+
+  /* ── FLASHLIGHT OVERLAY ── */
+  #flashlight {
+    position: fixed; inset: 0;
+    pointer-events: none !important;
+    z-index: 50;
+    background: radial-gradient(
+      circle 320px at 50% 50%,
+      transparent 0%,
+      transparent 30%,
+      rgba(0,0,0,0.45) 60%,
+      rgba(0,0,0,0.85) 100%
+    );
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: rgba(10,10,10,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo svg { width: 38px; height: 38px; }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    color: rgba(240,230,211,0.6); text-decoration: none;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    transition: color 0.3s; font-weight: 600;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta-group { display: flex; gap: 1rem; align-items: center; }
+  .nav-cta {
+    border: 1px solid var(--gold); color: var(--gold);
+    padding: 0.6rem 1.4rem; font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s;
+    font-weight: 700;
+  }
+  .nav-cta:hover { background: var(--gold); color: #000; }
+
+  /* ── HERO ── */
+  header#hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden; text-align: center;
+    padding: 0 2rem;
+  }
+  .hero-tag {
+    font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 12vw, 8.5rem);
+    font-weight: 300; line-height: 0.9;
+    color: var(--cream); letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+  }
+  .hero-name em { font-style: italic; color: var(--gold-light); }
+  .hero-sub {
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(240,230,211,0.5); margin-top: 2rem;
+    opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+    max-width: 600px;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 60; padding: 10rem 4rem; max-width: 1300px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem; display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 300; line-height: 1.1; margin-bottom: 3rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold-light); }
+  .reveal { opacity:0; transform:translateY(40px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── ABOUT ── */
+  #about .about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 6rem; align-items: start; }
+  .about-text p { font-size: 1.15rem; line-height: 1.8; color: rgba(240,230,211,0.8); margin-bottom: 1.8rem; }
+  .about-text strong { color: var(--gold-light); font-weight: 600; }
+  .stat-item { border-bottom: 1px solid var(--border); padding: 1.5rem 0; display: flex; justify-content: space-between; align-items: center; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--gold); }
+  .stat-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── SKILLS ── */
+  .skills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .skill-group { border: 1px solid var(--border); padding: 2.5rem; background: var(--glass); }
+  .skill-group h3 { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+  .skill-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.8rem; }
+  .skill-tag { border: 1px solid rgba(255,255,255,0.1); padding: 0.5rem 1rem; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,255,255,0.02); }
+
+  /* ── PROJECTS ── */
+  .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .proj-card {
+    border: 1px solid var(--border); padding: 3rem;
+    background: var(--glass); display: flex; flex-direction: column; justify-content: space-between;
+    transition: all 0.4s ease; min-height: 400px;
+  }
+  .proj-card.featured { grid-column: 1 / -1; min-height: auto; }
+  .proj-card:hover { border-color: var(--gold); transform: translateY(-5px); background: rgba(201,168,76,0.02); }
+  .proj-title { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; margin-bottom: 1rem; }
+  .proj-meta { font-size: 0.65rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: block;}
+  .proj-desc { font-size: 0.95rem; color: rgba(240,230,211,0.6); margin-bottom: 2rem; }
+  .proj-desc strong { color: var(--cream); }
+  .proj-link-btn {
+    align-self: flex-start; background: var(--gold); color: #000;
+    padding: 1rem 2rem; font-size: 0.75rem; font-weight: 800;
+    text-transform: uppercase; text-decoration: none; letter-spacing: 0.15em;
+    transition: all 0.3s;
+  }
+  .proj-link-btn:hover { background: var(--gold-light); transform: scale(1.05); }
+  .proj-secondary-link { color: var(--gold); text-decoration: none; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; margin-left: 1.5rem; border-bottom: 1px solid transparent; transition: 0.3s; }
+  .proj-secondary-link:hover { border-bottom: 1px solid var(--gold); }
+
+  /* ── CONTACT ── */
+  #contact { text-align: center; }
+  .contact-email {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--cream); text-decoration: none; display: block; margin: 3rem 0; transition: color 0.3s;
+  }
+  .contact-email:hover { color: var(--gold); }
+  .social-links { display: flex; justify-content: center; gap: 3rem; }
+  .social-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; transition: 0.3s; }
+  .social-links a:hover { color: var(--gold); }
+
+  footer {
+    padding: 3rem 4rem; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; font-size: 0.65rem;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em;
+  }
+
+  @media (max-width: 968px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 6rem 2rem; }
+    .about-grid, .skills-container, .proj-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-name { font-size: 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="flashlight"></div>
+
+<nav>
+  <a href="#hero" class="nav-logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="22,2 42,12 42,32 22,42 2,32 2,12" stroke="#c9a84c" stroke-width="1.5"/>
+        <circle cx="22" cy="22" r="5" fill="#c9a84c"/>
+    </svg>
+  </a>
+  <div class="nav-links">
+    <a href="#about">Philosophy</a>
+    <a href="#skills">Specialization</a>
+    <a href="#projects">Case Studies</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-cta-group">
+    <a href="www.linkedin.com/in/mariya-maheen-39675631a" target="_blank" class="nav-cta">LinkedIn</a>
+    <a href="mailto:mariya.maheen1901@gmail.com" class="nav-cta" style="background: var(--gold); color:#000;">Hire Me</a>
+  </div>
+</nav>
+
+<header id="hero">
+  <p class="hero-tag">Computer Science Engineer</p>
+  <h1 class="hero-name">Mariya<br/><em>Maheen</em></h1>
+  <p class="hero-sub">Specializing in Artificial Intelligence, Machine Learning, and Robust Web Architectures.</p>
+</header>
+
+<main>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="reveal">
+        <span class="section-label">01 — Philosophy</span>
+        <h2 class="section-title">Engineering with<br/><em>Intent & Insight</em></h2>
+        <div class="about-text">
+          <p>I bridge the gap between complex data logic and intuitive user experiences. As a Computer Science Engineer, my focus lies in <strong>Data-Driven Development</strong>—utilizing SQL and Python to extract actionable insights and translating them into high-performance web applications.</p>
+          <p>I thrive at the intersection of logic and creativity, aiming to build intelligent systems that don't just display information, but interpret it for the user.</p>
+        </div>
+      </div>
+      <div class="reveal" style="margin-top: 4rem;">
+        <div class="stat-item">
+            <span class="stat-label">Core Proficiency</span>
+            <span class="stat-num">Full Stack</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Data Focus</span>
+            <span class="stat-num">AIML</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Location</span>
+            <span class="stat-num">India</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <span class="section-label">02 — Specialization</span>
+    <h2 class="section-title">Technical<br/><em>Arsenal</em></h2>
+    <div class="skills-container reveal">
+      <div class="skill-group">
+        <h3>Languages & Logic</h3>
+        <ul class="skill-list">
+          <li class="skill-tag">Python</li>
+          <li class="skill-tag">C / C++</li>
+          <li class="skill-tag">JavaScript (ES6+)</li>
+          <li class="skill-tag">Data Structures</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Data Architecture</h3>
+        <ul class="skill-list">
+          <li class="skill-tag">MySQL</li>
+          <li class="skill-tag">Power BI</li>
+          <li class="skill-tag">Data Analytics</li>
+          <li class="skill-tag">Model Training</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Web Engineering</h3>
+        <ul class="skill-list">
+          <li class="skill-tag">HTML5 / CSS3</li>
+          <li class="skill-tag">Responsive Design</li>
+          <li class="skill-tag">Git / GitHub</li>
+          <li class="skill-tag">REST APIs</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <span class="section-label">03 — Case Studies</span>
+    <h2 class="section-title">Selected<br/><em>Engineering Work</em></h2>
+    
+    <div class="proj-grid">
+      <!-- Project 1 -->
+      <div class="proj-card featured reveal">
+        <div>
+          <span class="proj-meta">Frontend Engineering & Logic</span>
+          <h3 class="proj-title">Architectural Syntax Engine</h3>
+          <p class="proj-desc">
+            <strong>The Problem:</strong> Standard web calculators often suffer from floating-point errors and poor state management when handling multi-step operations.<br><br>
+            <strong>The Solution:</strong> Engineered a custom computation engine using Vanilla JavaScript. Optimized for precise decimal handling and intuitive keyboard-mapped interactions. Achieved a 100% Lighthouse score for performance and accessibility.
+          </p>
+        </div>
+        <div style="margin-top: auto;">
+          <a href="https://mariyamaheen.github.io/calculator/" target="_blank" class="proj-link-btn">Launch Application</a>
+          <a href="#" class="proj-secondary-link">View Documentation</a>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="proj-card reveal">
+        <div>
+          <span class="proj-meta">Data & Analytics</span>
+          <h3 class="proj-title">Retail Intelligence Dashboard</h3>
+          <p class="proj-desc">Currently developing a Power BI visualizer driven by a MySQL backend to identify seasonal consumer trends and inventory turnover rates.</p>
+        </div>
+        <span class="proj-meta" style="color: #555;">Status: In Development</span>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="proj-card reveal">
+        <div>
+          <span class="proj-meta">AI / Machine Learning</span>
+          <h3 class="proj-title">Predictive Model Analysis</h3>
+          <p class="proj-desc">Applying Supervised Learning algorithms to standardized datasets to improve prediction accuracy through feature engineering and data preprocessing.</p>
+        </div>
+        <span class="proj-meta" style="color: #555;">Focus: Regression Models</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+        <span class="section-label">04 — Contact</span>
+        <h2 class="section-title">Available for<br/><em>Internships 2025</em></h2>
+        <a href="mailto:mariya.maheen1901@gmail.com" class="contact-email">mariya.maheen1901@gmail.com</a>
+        <div class="social-links">
+          <a href="www.linkedin.com/in/mariya-maheen-39675631a" target="_blank">LinkedIn</a>
+          <a href="https://github.com/mariyamaheen" target="_blank">GitHub</a>
+          <a href="#">Download Resume (PDF)</a>
+        </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 2025 Mariya Maheen</span>
+  <span>Deccan College of Engineering & Tech · Hyderabad</span>
+</footer>
+
+<script>
+/* CURSOR LOGIC */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+const flashlight = document.getElementById('flashlight');
+
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let flashX = mouseX;
+let flashY = mouseY;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+  ring.style.left = mouseX + 'px';
+  ring.style.top = mouseY + 'px';
+});
+
+// Smooth Lerp for Flashlight for high-end feel
+function animate() {
+  flashX += (mouseX - flashX) * 0.1;
+  flashY += (mouseY - flashY) * 0.1;
+  
+  flashlight.style.background = `radial-gradient(circle 320px at ${flashX}px ${flashY}px, transparent 0%, transparent 30%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.85) 100%)`;
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* HOVER EFFECTS */
+document.querySelectorAll('a, button, .proj-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.width = '60px';
+    ring.style.height = '60px';
+    ring.style.borderColor = 'var(--gold)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '40px';
+    ring.style.height = '40px';
+    ring.style.borderColor = 'rgba(201,168,76,0.3)';
+  });
+});
+
+/* REVEAL OBSERVER */
+const observerOptions = { threshold: 0.15 };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
